@@ -1,0 +1,55 @@
+#include <Servo.h>
+
+Servo servo1;
+Servo servo2;
+
+const int buttonAPin = 8; //first house firecracker interaction 
+int buttonAState = 0; 
+bool A = false;
+
+const int buttonBPin = 9; //second house drum interaction
+int buttonBState = 0;
+
+const int buttonCPin = 10; //third house red lights interaction 
+const int ledPin1 = 7;
+int buttonCState = 0;
+
+void setup() {
+ servo1.attach(13);
+ servo2.attach(11);
+ pinMode (INPUT, buttonAPin);
+ pinMode (INPUT, buttonBPin);
+ pinMode(INPUT, buttonCPin);
+ pinMode(OUTPUT, ledPin1);
+}
+
+void loop() {
+  //Read button A
+  if (digitalRead(buttonAPin)==HIGH){
+    A = true;
+  }
+   if (A == true){
+  servo1.write(180);
+ } else {
+  servo1.write(0);
+ }
+//Read button B
+if (A == true) {
+  if (digitalRead(buttonBPin)==HIGH){
+
+    for (int pos = 0; pos <= 180; pos++) { // Move from 0° to 180°
+    servo2.write(pos); // Set the servo position
+  }
+  for (int pos = 180; pos >= 0; pos--) { // Move from 180° back to 0°
+    servo2.write(pos); // Set the servo position
+   }
+  }
+}
+//Read button C
+buttonCState = digitalRead(buttonCPin);
+if (buttonCState == HIGH) {
+  digitalWrite (ledPin1, HIGH);
+  } else {
+  digitalWrite (ledPin1, LOW);
+}
+}
