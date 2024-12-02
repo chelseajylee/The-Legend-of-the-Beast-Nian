@@ -1,0 +1,92 @@
+#include <Servo.h>
+
+Servo servo1;
+Servo servo2;
+Servo servo3;
+
+const int buttonAPin = 8; // First house firecracker interaction
+int buttonAState = 0; 
+bool A = false;
+
+const int buttonBPin = 9; // Second house drum interaction
+int buttonBState = 0;
+bool B = false;
+
+const int buttonCPin = 10; // Third house red lights interaction
+const int ledPin1 = 7;
+const int ledPin2 = 5;
+int buttonCState = 0;
+bool C = false;
+
+const int buttonDPin = 6; // Fourth cave interaction
+int buttonDState = 0;
+bool D = false;
+
+void setup() {
+  servo1.attach(13);
+  servo2.attach(11);
+  servo3.attach(12);
+
+  pinMode(buttonAPin, INPUT);
+  pinMode(buttonBPin, INPUT);
+  pinMode(buttonCPin, INPUT);
+  pinMode(ledPin1, OUTPUT);
+  pinMode(ledPin2, OUTPUT);
+  pinMode(buttonDPin, INPUT);
+}
+
+void loop() {
+  // Read Button A
+  buttonAState = digitalRead(buttonAPin);
+  if (buttonAState == HIGH) {
+    A = true;
+  }
+  if (A) {
+    servo1.write(180); // Activate Servo 1
+  } else {
+    servo1.write(0);
+  }
+
+  // Read Button B 
+  if (A) {
+    buttonBState = digitalRead(buttonBPin);
+    if (buttonBState == HIGH) {
+      B = true;
+    
+      for (int pos = 0; pos <= 180; pos++) {
+        servo2.write(pos);
+      
+      }
+      for (int pos = 180; pos >= 0; pos--) {
+        servo2.write(pos);
+      
+      }
+    }
+  }
+
+  // Read Button C 
+  if (B) {
+    buttonCState = digitalRead(buttonCPin);
+    if (buttonCState == HIGH) {
+      C = true;
+      digitalWrite(ledPin1, HIGH);
+      digitalWrite(ledPin2, HIGH);
+    } else {
+      digitalWrite(ledPin1, LOW);
+      digitalWrite(ledPin2, LOW);
+    }
+  }
+
+
+
+  // Read Button D 
+    buttonDState = digitalRead(buttonDPin);
+    if (buttonDState == HIGH) {
+      D = true;
+    }
+    if (D) {
+      servo3.write(180); // Activate Servo 3
+    } else {
+      servo3.write(0);
+    }
+  }
